@@ -6,6 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Models\CmsPage;
 use Illuminate\Http\Request;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken as Middleware;
+use App\Models\AdminsRole;
+use Illuminate\Support\Facades\Auth;
+use Symfony\Component\HttpFoundation\Session\Session;
 
 
 class CmsController extends Controller
@@ -17,7 +20,22 @@ class CmsController extends Controller
     {
         session()->put('pages', 'cms-pages');
         $CmsPages = CmsPage::get()->toArray();
-        return view('admin.pages.cms_pages')->with(compact('CmsPages'));
+
+        // set admin/subadmin permission for cms pages
+        $cmspagesModuleCount = AdminsRole::where(['subadmin_id' =>Auth::guard('admin')->user()->id, 'module'=>'cms_pages'])->count();
+        $pageModule = array();
+        if(Auth::guard('admin')->user()->type=="admin") {
+            $pagesModule['view_access'] = 1;
+            $pagesModule['edit_access'] = 1;
+            $pagesModule['full_access'] = 1;
+        }else if($cmspagesModuleCount==0) {
+            $message = "This features is restricted for you!";
+            return redirect('admin/dashboard')->with('error_message', $message);
+        }else {
+            $pagesModule = AdminsRole::where(['subadmin_id'=>Auth::guard('admin')->user()->id, 'module'=>'cms_pages'])->first()->toArray();
+        }
+
+        return view('admin.pages.cms_pages')->with(compact('CmsPages', 'pagesModule'));
     }
 
 
@@ -51,7 +69,7 @@ class CmsController extends Controller
      */
     public function edit(Request $request, $id = null)
     {
-        session()->put('pages', 'cms-pages');
+        session()->put('page', 'cms-pages');
         if ($id == "") {
             $title = "Tambah Halaman CMS";
             $cmspage = new CmsPage;
@@ -101,7 +119,7 @@ class CmsController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, CmsPage $cmsPage)
+    public function update(Request $request)
     {
         if ($request->ajax()) {
             $data = $request->all();

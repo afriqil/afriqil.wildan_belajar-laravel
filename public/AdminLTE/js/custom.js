@@ -51,6 +51,63 @@ $(document).ready(function () {
     });
   });
 
+    // Memperbarui Status Halaman category
+  $(document).on("click", ".updateCategoryStatus", function () {
+    var status = $(this).children("i").attr("status");
+    var category_id = $(this).attr("category_id");
+    $.ajax({
+      headers: {
+        "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+      },
+      type: "post",
+      url: "/admin/update-category-status",
+      data: { status: status, category_id: category_id },
+      success: function (resp) {
+        if (resp["status"] == 0) {
+          $("#category-" + category_id).html(
+            "<i class='fas fa-toggle-off' style='color:#B22222' status='Tidak Aktif'></i>"
+          );
+        } else if (resp["status"] == 1) {
+          $("#category-" + category_id).html(
+            "<i class='fas fa-toggle-on' style='color:#3f6ed3' status='Aktif'></i>"
+          );
+        }
+      },
+      error: function () {
+        alert("Terjadi kesalahan");
+      },
+    });
+  });
+
+
+  // Memperbarui status halaman Sub Admin
+  $(document).on("click", ".updateSubadminStatus", function () {
+    var status = $(this).children("i").attr("status");
+    var subadmin_id = $(this).attr("subadmin_id");
+    $.ajax({
+      headers: {
+        "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+      },
+      type: "post",
+      url: "/admin/update-subadmin-status",
+      data: { status: status, subadmin_id: subadmin_id },
+      success: function (resp) {
+        if (resp["status"] == 0) {
+          $("#subadmin-" + subadmin_id).html(
+            "<i class='fas fa-toggle-off' style='color:#B22222' status='Tidak Aktif'></i>"
+          );
+        } else if (resp["status"] == 1) {
+          $("#subadmin-" + subadmin_id).html(
+            "<i class='fas fa-toggle-on' style='color:#3f6ed3' status='Aktif'></i>"
+          );
+        }
+      },
+      error: function () {
+        alert("Terjadi kesalahan");
+      },
+    });
+  });
+
   //   Conform delete of CMS Pages
   /* $(document).on("click", ".confirmDelete", function () {
     var name = $(this).attr("name");

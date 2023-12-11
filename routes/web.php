@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\ProductsController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -33,5 +34,25 @@ Route::prefix('/admin')->namespace('App\Http\Controllers\Admin')->group(function
         Route::post('update-cms-page-status', 'CmsController@update');
         Route::match (['get', 'post'], 'add-edit-cms-pages/{id?}', 'CmsController@edit');
         Route::get('delete-cms-page/{id?}', 'CmsController@destroy');
+
+        // Subadmins
+        Route::get('subadmins', 'AdminController@subadmins');
+        Route::post('update-subadmin-status', 'AdminController@updateAdminStatus');
+        Route::match (['get', 'post'], 'add-edit-subadmin/{id?}', 'AdminController@addEditSubadmin');
+        Route::get('delete-subadmin/{id?}', 'AdminController@deleteSubadmin');
+        Route::match(['get', 'post'], 'update-role/{id}', 'AdminController@updateRole');
+
+        // Categories
+        Route::get('categories', 'CategoryController@categories');
+        Route::post('update-category-status', 'CategoryController@updateCategoryStatus');
+        Route::get('delete-category/{id?}', 'CategoryController@deleteCategory');
+        Route::get('delete-category-image/{id?}', 'CategoryController@deleteCategoryImage');
+        Route::match (['get', 'post'], 'add-edit-category/{id?}', 'CategoryController@addEditCategory');
+
+        // Product
+        Route::get('products', 'ProductsController@products');
+        
+
+
     }); // Perbaikan: Tambahkan tanda kurung tutup disini
 });

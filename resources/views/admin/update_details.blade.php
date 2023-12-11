@@ -71,7 +71,7 @@
           <label for="admin_image">Image</label>
           <input type="file" class="form-control" id="admin_image" name="admin_image">
             @if(!empty(Auth::guard('admin')->user()->image))
-            <a target="_blank" href="{{ url('AdminLTE/dist/img/photos/'.Auth::guard('admin')->user()->image)}}">View Foto</a>
+            <a target="_blank" href="{{ url('AdminLTE/dist/img/subadmins/'.Auth::guard('admin')->user()->image)}}">View Foto</a>
             <input type="hidden" value="{{Auth::guard('admin')->user()->image}}" name="current_image">
             @endif
         </div>

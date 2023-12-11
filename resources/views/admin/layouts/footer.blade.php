@@ -5,7 +5,7 @@
   <!-- /.control-sidebar -->
   <!-- Main Footer -->
   <footer class="main-footer">
-    <strong>Copyright &copy; 2023 <a href="https://adminlte.io">Afriqil Wildan</a>.</strong>
+    <strong>Copyright &copy; <?php echo date ('Y');  ?> <a href="https://adminlte.io">Afriqil Wildan</a>.</strong>
     All rights reserved.
     <div class="float-right d-none d-sm-inline-block">
       <b>Version</b> 3.2.0
@@ -47,6 +47,8 @@
   <script>
     $(function() {
       $("#cmspages").DataTable();
+      $("#subadmins").DataTable();
+      $("#categories").DataTable();
     });
   </script>
   <!-- Select2 -->
